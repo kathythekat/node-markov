@@ -6,9 +6,8 @@ class MarkovMachine {
 
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
-    this.chain = this.makeChains(words);
-    this.firstWord = words[0];
-    // MORE CODE HERE
+    this.chain = this.makeChain(words);
+    this.firstWords = words.slice(0,3);
   }
 
   /** set markov chains:
@@ -21,7 +20,7 @@ class MarkovMachine {
 
  
 
-  makeChains(words) {
+  makeChain(words) {
     let chain = {};
     for(let i = 0; i < words.length; i++) {
       if (chain[words[i]] === undefined) { 
@@ -38,6 +37,7 @@ class MarkovMachine {
         }
       } 
     }
+    // stop the array one short and push the next
     return chain;
   }
 
@@ -48,19 +48,20 @@ class MarkovMachine {
   getText(numWords = 100) {
     let wc = 0;
     let result = '';
-    let currentNext = this.firstWord;
+    let currentNext = pickRandomFromArray(this.firstWords);
     while(wc < numWords){
       if(currentNext === null){
-        result += '. '
-        currentNext = this.firstWord;
+        result += '. ';
+        currentNext = pickRandomFromArray(this.firstWords);
       }
         result += currentNext + ' ';
         wc ++;
         let nextOptions = this.chain[currentNext];
         currentNext = pickRandomFromArray(nextOptions);
     }
-    return result;
+    return result + '.';
   }
+  // another way, build an array and join them at the end
 }
 
 function pickRandomFromArray(arr){
