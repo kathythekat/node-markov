@@ -1,7 +1,6 @@
 {
   "name": "node-markov",
   "version": "1.0.0",
-  "description": "",
   "main": "makeText.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +18,6 @@
   "homepage": "https://github.com/kathythekat/node-markov#readme",
   "dependencies": {
     "axios": "^0.21.1"
-  }
+  },
+  "description": ""
 }

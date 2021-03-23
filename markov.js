@@ -7,16 +7,19 @@ class MarkovMachine {
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
     this.chain = this.makeChains(words);
+    this.firstWord = words[0];
     // MORE CODE HERE
   }
 
   /** set markov chains:
    *
    *  for text of "the cat in the hat", chains will be
-   *  {"the": ["cat", "hat", "the"], "cat": ["in"], "in": ["the"], "hat": [null]} */
+   *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   //["the", "cat", "the"]
   //{"the": ["cat", "undef"], "cat": ["the"], }
+
+ 
 
   makeChains(words) {
     let chain = {};
@@ -41,9 +44,27 @@ class MarkovMachine {
 
   /** return random text from chains */
 
+  
   getText(numWords = 100) {
-    // MORE CODE HERE
+    let wc = 0;
+    let result = '';
+    let currentNext = this.firstWord;
+    while(wc < numWords){
+      if(currentNext === null){
+        result += '. '
+        currentNext = this.firstWord;
+      }
+        result += currentNext + ' ';
+        wc ++;
+        let nextOptions = this.chain[currentNext];
+        currentNext = pickRandomFromArray(nextOptions);
+    }
+    return result;
   }
+}
+
+function pickRandomFromArray(arr){
+  return arr[Math.floor( Math.random() * arr.length )]
 }
 
 module.exports = {MarkovMachine}
