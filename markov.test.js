@@ -18,3 +18,10 @@ test("get text", function() {
   let totalLength = mm.getText().split(' ').length;
   expect(totalLength).toEqual(100)
 })
+
+test("get text of custom length", function() {
+  let mm = new MarkovMachine("roses are red");
+  let totalLength = mm.getText(50).split(' ').length;
+  expect(totalLength).toEqual(50)
+  expect(mm.getText()).toEqual(expect.any(String))
+})
