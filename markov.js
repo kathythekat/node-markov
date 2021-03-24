@@ -22,20 +22,19 @@ class MarkovMachine {
 
   makeChain(words) {
     let chain = {};
-    for(let i = 0; i < words.length; i++) {
+    const lastIndex = words.length - 1;
+    for(let i = 0; i < lastIndex; i++) {
       if (chain[words[i]] === undefined) { 
-        if (i === words.length - 1) {
-          chain[words[i]] = [null];
-        } else {
-          chain[words[i]] = [words[i + 1]];
-        }
+        chain[words[i]] = [words[i + 1]];
+        
       } else {
-        if (i === words.length - 1)  {
-          chain[words[i]].push(null);
-        } else {
-          chain[words[i]].push(words[i + 1]);
-        }
+        chain[words[i]].push(words[i + 1]);
       } 
+    }
+    if (chain[words[lastIndex]]) {
+      chain[words[lastIndex]].push(null);
+    } else {
+      chain[words[lastIndex]] = [null];
     }
     // stop the array one short and push the next
     return chain;
@@ -43,26 +42,26 @@ class MarkovMachine {
 
 
   /** return random text from chains */
-
-  
   getText(numWords = 100) {
     let wc = 0;
     let result = '';
-    let currentNext = pickRandomFromArray(this.firstWords);
+    let current = pickRandomFromArray(this.firstWords);
+    let next = pickRandomFromArray(this.chain[current]);
     while(wc < numWords){
-      if(currentNext === null){
-        result += '. ';
-        currentNext = pickRandomFromArray(this.firstWords);
+      if(next === null){
+        result += current + '. ';
+        current = pickRandomFromArray(this.firstWords);
+      } else {
+        result += current + ' ';
+        current = next;
       }
-        result += currentNext + ' ';
-        wc ++;
-        let nextOptions = this.chain[currentNext];
-        currentNext = pickRandomFromArray(nextOptions);
+      next = pickRandomFromArray(this.chain[current]);
+      wc ++;
     }
-    return result + '.';
+    return result.slice(0, result.length - 1);
   }
-  // another way, build an array and join them at the end
 }
+
 
 function pickRandomFromArray(arr){
   return arr[Math.floor( Math.random() * arr.length )]
