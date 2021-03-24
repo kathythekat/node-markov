@@ -7,7 +7,13 @@ class MarkovMachine {
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
     this.chain = this.makeChain(words);
-    this.firstWords = words.slice(0,3);
+    this.firstWords = [words[0]]
+
+    words.forEach(word => {
+      if (word[0].toUpperCase() === word[0]) {
+        this.firstWords.push(word);
+      }
+    })
   }
 
   /** set markov chains:
